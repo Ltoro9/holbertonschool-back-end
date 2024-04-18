@@ -11,7 +11,6 @@ def get_employee(id=None):
     """
     Retrieve and display the TODO list progress for a given employee ID.
     """
-    # check if argv[1] is a number int
     if len(sys.argv) > 1:
         try:
             id = int(sys.argv[1])
