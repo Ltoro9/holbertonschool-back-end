@@ -4,40 +4,43 @@
 """
 
 import requests
-import sys
+from sys import argv
 
 
 def get_employee(id=None):
     """
-    Retrieve and display the TODO list progress for a given employee ID.
+    using this REST API, for a given employee ID,
+    returns information about his/her TODO list progress.
     """
-    if id is None:
-        if len(sys.argv) > 1:
-            try:
-                id = int(sys.argv[1])
-            except ValueError:
-                return
-        else:
+    # check if argv[1] is a number int
+    if len(argv) > 1:
+        try:
+            id = int(argv[1])
+        except ValueError:
             return
 
-    base_url = "https://jsonplaceholder.typicode.com"
-    user_response = requests.get(f"{base_url}/users/{id}")
-    todos_response = requests.get(f"{base_url}/todos/?userId={id}")
+    if isinstance(id, int):
+        base = "https://jsonplaceholder.typicode.com"
+        user = requests.get(f"{base}/users/{id}", timeout=10).json()
+        to_dos = requests.get(f"{base}/todos/?userId={id}", timeout=10).json()
 
-    if user_response.status_code != 200 or todos_response.status_code != 200:
-        print("Failed to fetch data from the API")
-        return
+        if user and to_dos:
+            total_tasks = len(to_dos)
+            # fmt: off
+            titles_completed = [task["title"]
+                                for task in to_dos
+                                if task["completed"]]
+            # fmt: on
+            tasks_completed = len(titles_completed)
 
-    user_data = user_response.json()
-    todos_data = todos_response.json()
+            print(
+                "Employee {} is done with tasks({}/{}):".format(
+                    user["name"], tasks_completed, total_tasks
+                )
+            )
 
-    total_tasks = len(todos_data)
-    completed_tasks = [todo["title"] for todo in todos_data if todo["completed"]]
-
-    print(f"Employee {user_data['name']} is done with tasks ({len(completed_tasks)}/{total_tasks}):")
-
-    for title in completed_tasks:
-        print(f"\t{title}")
+            for title in titles_completed:
+                print(f"\t {title}")
 
 
 if __name__ == "__main__":
