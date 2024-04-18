@@ -4,16 +4,18 @@
 """
 
 import requests
-import sys
+from sys import argv
 
 
 def get_employee(id=None):
     """
-    Retrieve and display the TODO list progress for a given employee ID.
+    using this REST API, for a given employee ID,
+    returns information about his/her TODO list progress.
     """
-    if len(sys.argv) > 1:
+    # check if argv[1] is a number int
+    if len(argv) > 1:
         try:
-            id = int(sys.argv[1])
+            id = int(argv[1])
         except ValueError:
             return
 
@@ -24,15 +26,18 @@ def get_employee(id=None):
 
         if user and to_dos:
             total_tasks = len(to_dos)
-
+            # fmt: off
             titles_completed = [task["title"]
                                 for task in to_dos
                                 if task["completed"]]
-
+            # fmt: on
             tasks_completed = len(titles_completed)
 
-            print(f"Employee {user['name']} is done with tasks\
-                    ({len(tasks_completed)}/{total_tasks}):")
+            print(
+                "Employee {} is done with tasks({}/{}):".format(
+                    user["name"], tasks_completed, total_tasks
+                )
+            )
 
             for title in titles_completed:
                 print(f"\t {title}")
