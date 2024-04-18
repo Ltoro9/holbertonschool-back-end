@@ -33,11 +33,8 @@ def get_employee(id=None):
             # fmt: on
             tasks_completed = len(titles_completed)
 
-            print(
-                "Employee {} is done with tasks({}/{}):".format(
-                    user["name"], tasks_completed, total_tasks
-                )
-            )
+            print(f"Employee {user['name']} is done with tasks\
+                    ({len(tasks_completed)}/{total_tasks}):")
 
             for title in titles_completed:
                 print(f"\t {title}")
