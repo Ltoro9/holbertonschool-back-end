@@ -56,8 +56,8 @@ def get_employee(id=None):
                 user_dict = {}
                 user_dict.update(
                     {'task': task['title'],
-                    'completed': task['completed'],
-                    'username': user['username']}
+                        'completed': task['completed'],
+                        'username': user['username']}
                     )
                 user_list.append(user_dict)
             json_dict[user['id']] = user_list
