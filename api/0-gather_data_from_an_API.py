@@ -4,7 +4,7 @@
 """
 
 import requests
-from sys import argv
+import sys
 
 
 def get_employee(id=None):
@@ -12,10 +12,9 @@ def get_employee(id=None):
     using this REST API, for a given employee ID,
     returns information about his/her TODO list progress.
     """
-    # check if argv[1] is a number int
-    if len(argv) > 1:
+    if len(sys.argv) > 1:
         try:
-            id = int(argv[1])
+            id = int(sys.argv[1])
         except ValueError:
             return
 
